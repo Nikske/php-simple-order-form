@@ -8,23 +8,52 @@ error_reporting(E_ALL);
 
 //we are going to use session variables so we need to enable sessions
 session_start();
-$email = ""; $street = "";
-$emailErr = ""; $streetErr = "";
+
+// VALIDATION
+// Initialising variables
+$email = ""; $street = ""; $streetnr = ""; $city = ""; $zipcode = "";
+$emailErr = ""; $streetErr = ""; $streetnrErr = ""; $cityErr = ""; $zipcodeErr = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Email
     if (empty($_POST["email"])) {
-        $emailErr = "YOUR EMAIL GOES INTO THE EMAIL FIELD, YOU GANGLY TROGLODYTE";
+        $emailErr = "Your email goes into the email field";
     } else {
         $email = input($_POST["email"]);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "THAT'S NOT A CORRECT EMAIL ADDRESS NOW IS IT ? YOU CANTANKEROUS GOBLIN";
+            $emailErr = "THAT'S NOT A CORRECT EMAIL ADDRESS NOW IS IT ? YOU GANGLY GREASE-GOBLIN";
         }
     }
-
+    // Street
     if (empty($_POST["street"])) {
-        $streetErr = "OH COME ON, YOU CAN REMEMBER YOUR OWN STREET NAME RIGHT?";
+        $streetErr = "Surely you can remember where you live?";
     } else {
         $street = input($_POST["street"]);
+    }
+    // Street number
+    if (empty($_POST["streetnumber"])) {
+        $streetnrErr = "Street -number-. It's right there man, just give us a number.";
+    } else {
+        $streetnr = input($_POST["streetnumber"]);
+        // Check if the street number is an actual number
+        if (!is_numeric($streetnr)) {
+            $streetnrErr = "I'm no Count von Count but that's not a number";
+        }
+    }
+    // City
+    if (empty($_POST["city"])) {
+        $cityErr = "So I wasn't wrong for thinking you're a caveman because you apparently don't live in a city.";
+    } else {
+        $city = input($_POST["city"]);
+    }
+    // Zipcode
+    if (empty($_POST["zipcode"])) {
+        $zipcodeErr = "Your zipcode, please";
+    } else {
+        $zipcode = input($_POST["zipcode"]);
+        if (!is_numeric($zipcode)) {
+            $zipcodeErr= "NaN. No I'm not calling your grandmother, I'm saying whatever you just entered wasn't a number";
+        }
     }
 }
 
