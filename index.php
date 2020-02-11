@@ -11,7 +11,7 @@ session_start();
 
 // VALIDATION
 // Initialising variables
-$email = ""; $street = ""; $streetnr = ""; $city = ""; $zipcode = "";
+$emailData = $_SESSION["email"]; $streetData = $_SESSION["street"]; $streetnrData = $_SESSION["streetnumber"]; $cityData = $_SESSION["city"]; $zipcodeData = $_SESSION["zipcode"];
 $emailErr = ""; $streetErr = ""; $streetnrErr = ""; $cityErr = ""; $zipcodeErr = "";
 $errorArr = [];
 $success = "";
@@ -21,8 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["email"])) {
         $emailErr = "Your email goes into the email field";
         array_push($errorArr, $emailErr);
+        $_SESSION["email"] = "";
     } else {
-        $email = input($_POST["email"]);
+        $_SESSION["email"] = input($_POST["email"]);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailErr = "THAT'S NOT A CORRECT EMAIL ADDRESS NOW IS IT ? YOU GANGLY GREASE-GOBLIN";
             array_push($errorArr, $emailErr);
@@ -32,17 +33,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["street"])) {
         $streetErr = "Surely you can remember where you live?";
         array_push($errorArr, $streetErr);
+        $_SESSION["street"] = "";
     } else {
-        $street = input($_POST["street"]);
+        $_SESSION["street"] = input($_POST["street"]);
     }
     // Street number
     if (empty($_POST["streetnumber"])) {
         $streetnrErr = "The street number, hand it over";
         array_push($errorArr,$streetErr);
+        $_SESSION["streetnumber"] = "";
     } else {
-        $streetnr = input($_POST["streetnumber"]);
+        $_SESSION["streetnumber"] = input($_POST["streetnumber"]);
         // Check if the street number is an actual number
-        if (!is_numeric($streetnr)) {
+        if (!is_numeric($_SESSION["streetnumber"])) {
             $streetnrErr = "I'm no Count von Count but that's not a number";
             array_push($errorArr,$streetErr);
         }
@@ -51,16 +54,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["city"])) {
         $cityErr = "So I wasn't wrong for thinking you're a caveman because you apparently don't live in a city";
         array_push($errorArr, $cityErr);
+        $_SESSION["city"] = "";
     } else {
-        $city = input($_POST["city"]);
+        $_SESSION["city"] = input($_POST["city"]);
     }
     // Zipcode
     if (empty($_POST["zipcode"])) {
         $zipcodeErr = "Your zipcode, please";
         array_push($errorArr, $zipcodeErr);
+        $_SESSION["zipcode"] = "";
     } else {
-        $zipcode = input($_POST["zipcode"]);
-        if (!is_numeric($zipcode)) {
+        $_SESSION["zipcode"] = input($_POST["zipcode"]);
+        if (!is_numeric($_SESSION["zipcode"])) {
             $zipcodeErr= "Number please";
             array_push($errorArr, $zipcodeErr);
         }
