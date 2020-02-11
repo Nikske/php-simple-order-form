@@ -25,6 +25,9 @@
     <div class="alert alert-success" role="alert">
         <span><?php echo $success; ?></span>
     </div>
+    <div class="alert alert-success" role="alert">
+        <span><?php echo $delivery; ?></span>
+    </div>
     <form method="post">
         <div class="form-row">
             <!-- Email -->
@@ -86,7 +89,11 @@
                     &euro; <?php echo number_format($product['price'], 2) ?></label><br />
             <?php endforeach; ?>
         </fieldset>
-
+        <fieldset>
+            <label>
+                <input type="checkbox" name="express"> Express delivery?
+            </label>
+        </fieldset>
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
 

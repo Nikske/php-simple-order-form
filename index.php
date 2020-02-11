@@ -16,6 +16,7 @@ $emailData = $_SESSION["email"]; $streetData = $_SESSION["street"]; $streetnrDat
 $emailErr = ""; $streetErr = ""; $streetnrErr = ""; $cityErr = ""; $zipcodeErr = "";
 $errorArr = [];
 $success = "";
+$delivery = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Email
@@ -82,6 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If the error array is empty, meaning if there are no errors give them the green light, otherwise clear the error array so the user can try again.
     if (empty($errorArr)) {
         $success = "Order ordered";
+        if (!isset($_POST["express"])) {
+            $delivery = date('h:i:s A', strtotime('+ 2 hours'));
+        } else {
+            $delivery = date('h:i:s A', strtotime('+ 45 minutes'));
+        }
     } else {
         $errorArr = [];
     }
@@ -118,7 +124,7 @@ if (!isset($_GET["food"])) {
 }
 // If food = 1 display the products array as food otherwise (aka 0) display as drinks
 if ($_GET["food"] == 1) {
-    $products = $products;
+    $products;
 } else {
     $products = $drink;
 }
@@ -126,7 +132,6 @@ if ($_GET["food"] == 1) {
 
 $totalValue = 0;
 
-whatIsHappening();
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
     var_dump($_GET);
