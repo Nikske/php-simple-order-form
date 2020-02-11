@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $_SESSION["email"] = input($_POST["email"]);
         $emailData = $_SESSION["email"];
+
         if (!filter_var($_SESSION["email"], FILTER_VALIDATE_EMAIL)) {
             $emailErr = "THAT'S NOT A CORRECT EMAIL ADDRESS NOW IS IT ? YOU GANGLY GREASE-GOBLIN";
             array_push($errorArr, $emailErr);
@@ -48,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $_SESSION["streetnumber"] = input($_POST["streetnumber"]);
         $streetnrData = $_SESSION["streetnumber"];
+
         // Check if the street number is an actual number
         if (!is_numeric($_SESSION["streetnumber"])) {
             $streetnrErr = "I'm no Count von Count but that's not a number";
@@ -71,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $_SESSION["zipcode"] = input($_POST["zipcode"]);
         $zipcodeData = $_SESSION["zipcode"];
+
         if (!is_numeric($_SESSION["zipcode"])) {
             $zipcodeErr= "Number please";
             array_push($errorArr, $zipcodeErr);
@@ -92,6 +95,37 @@ function input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
+
+// FOOD & DRINK
+//your products with their price.
+$products = [
+    ['name' => 'Club Ham', 'price' => 3.20],
+    ['name' => 'Club Cheese', 'price' => 3],
+    ['name' => 'Club Cheese & Ham', 'price' => 4],
+    ['name' => 'Club Chicken', 'price' => 4],
+    ['name' => 'Club Salmon', 'price' => 5]
+];
+
+$drink = [
+    ['name' => 'Cola', 'price' => 2],
+    ['name' => 'Fanta', 'price' => 2],
+    ['name' => 'Sprite', 'price' => 2],
+    ['name' => 'Ice-tea', 'price' => 3],
+];
+// Set food to 1 to avoid initial errors
+if (!isset($_GET["food"])) {
+    $_GET["food"] = 1;
+}
+// If food = 1 display the products array as food otherwise (aka 0) display as drinks
+if ($_GET["food"] == 1) {
+    $products = $products;
+} else {
+    $products = $drink;
+}
+
+
+$totalValue = 0;
+
 whatIsHappening();
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
@@ -103,23 +137,5 @@ function whatIsHappening() {
     echo '<h2>$_SESSION</h2>';
     var_dump($_SESSION);
 }
-
-//your products with their price.
-$products = [
-    ['name' => 'Club Ham', 'price' => 3.20],
-    ['name' => 'Club Cheese', 'price' => 3],
-    ['name' => 'Club Cheese & Ham', 'price' => 4],
-    ['name' => 'Club Chicken', 'price' => 4],
-    ['name' => 'Club Salmon', 'price' => 5]
-];
-
-$products = [
-    ['name' => 'Cola', 'price' => 2],
-    ['name' => 'Fanta', 'price' => 2],
-    ['name' => 'Sprite', 'price' => 2],
-    ['name' => 'Ice-tea', 'price' => 3],
-];
-
-$totalValue = 0;
 
 require 'form-view.php';
