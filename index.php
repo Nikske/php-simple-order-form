@@ -13,47 +13,63 @@ session_start();
 // Initialising variables
 $email = ""; $street = ""; $streetnr = ""; $city = ""; $zipcode = "";
 $emailErr = ""; $streetErr = ""; $streetnrErr = ""; $cityErr = ""; $zipcodeErr = "";
+$errorArr = [];
+$success = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Email
     if (empty($_POST["email"])) {
         $emailErr = "Your email goes into the email field";
+        array_push($errorArr, $emailErr);
     } else {
         $email = input($_POST["email"]);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailErr = "THAT'S NOT A CORRECT EMAIL ADDRESS NOW IS IT ? YOU GANGLY GREASE-GOBLIN";
+            array_push($errorArr, $emailErr);
         }
     }
     // Street
     if (empty($_POST["street"])) {
         $streetErr = "Surely you can remember where you live?";
+        array_push($errorArr, $streetErr);
     } else {
         $street = input($_POST["street"]);
     }
     // Street number
     if (empty($_POST["streetnumber"])) {
-        $streetnrErr = "Street -number-. It's right there man, just give us a number.";
+        $streetnrErr = "The street number, hand it over";
+        array_push($errorArr,$streetErr);
     } else {
         $streetnr = input($_POST["streetnumber"]);
         // Check if the street number is an actual number
         if (!is_numeric($streetnr)) {
             $streetnrErr = "I'm no Count von Count but that's not a number";
+            array_push($errorArr,$streetErr);
         }
     }
     // City
     if (empty($_POST["city"])) {
-        $cityErr = "So I wasn't wrong for thinking you're a caveman because you apparently don't live in a city.";
+        $cityErr = "So I wasn't wrong for thinking you're a caveman because you apparently don't live in a city";
+        array_push($errorArr, $cityErr);
     } else {
         $city = input($_POST["city"]);
     }
     // Zipcode
     if (empty($_POST["zipcode"])) {
         $zipcodeErr = "Your zipcode, please";
+        array_push($errorArr, $zipcodeErr);
     } else {
         $zipcode = input($_POST["zipcode"]);
         if (!is_numeric($zipcode)) {
-            $zipcodeErr= "NaN. No I'm not calling your grandmother, I'm saying whatever you just entered wasn't a number";
+            $zipcodeErr= "Number please";
+            array_push($errorArr, $zipcodeErr);
         }
+    }
+    // If the error array is empty, meaning if there are no errors give them the green light, other wise clear the error array so the user can try again.
+    if (empty($errorArr)) {
+        $success = "Order ordered";
+    } else {
+        $errorArr = [];
     }
 }
 
@@ -65,8 +81,6 @@ function input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
-
-whatIsHappening();
 
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
