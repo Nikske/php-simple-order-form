@@ -12,6 +12,7 @@ session_start();
 // VALIDATION
 // Initialising variables
 $emailData = $_SESSION["email"]; $streetData = $_SESSION["street"]; $streetnrData = $_SESSION["streetnumber"]; $cityData = $_SESSION["city"]; $zipcodeData = $_SESSION["zipcode"];
+
 $emailErr = ""; $streetErr = ""; $streetnrErr = ""; $cityErr = ""; $zipcodeErr = "";
 $errorArr = [];
 $success = "";
@@ -24,7 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["email"] = "";
     } else {
         $_SESSION["email"] = input($_POST["email"]);
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailData = $_SESSION["email"];
+        if (!filter_var($_SESSION["email"], FILTER_VALIDATE_EMAIL)) {
             $emailErr = "THAT'S NOT A CORRECT EMAIL ADDRESS NOW IS IT ? YOU GANGLY GREASE-GOBLIN";
             array_push($errorArr, $emailErr);
         }
@@ -36,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["street"] = "";
     } else {
         $_SESSION["street"] = input($_POST["street"]);
+        $streetData = $_SESSION["street"];
     }
     // Street number
     if (empty($_POST["streetnumber"])) {
@@ -44,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["streetnumber"] = "";
     } else {
         $_SESSION["streetnumber"] = input($_POST["streetnumber"]);
+        $streetnrData = $_SESSION["streetnumber"];
         // Check if the street number is an actual number
         if (!is_numeric($_SESSION["streetnumber"])) {
             $streetnrErr = "I'm no Count von Count but that's not a number";
@@ -57,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["city"] = "";
     } else {
         $_SESSION["city"] = input($_POST["city"]);
+        $cityData = $_SESSION["city"];
     }
     // Zipcode
     if (empty($_POST["zipcode"])) {
@@ -65,12 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["zipcode"] = "";
     } else {
         $_SESSION["zipcode"] = input($_POST["zipcode"]);
+        $zipcodeData = $_SESSION["zipcode"];
         if (!is_numeric($_SESSION["zipcode"])) {
             $zipcodeErr= "Number please";
             array_push($errorArr, $zipcodeErr);
         }
     }
-    // If the error array is empty, meaning if there are no errors give them the green light, other wise clear the error array so the user can try again.
+    // If the error array is empty, meaning if there are no errors give them the green light, otherwise clear the error array so the user can try again.
     if (empty($errorArr)) {
         $success = "Order ordered";
     } else {
@@ -86,7 +92,7 @@ function input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
-
+whatIsHappening();
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
     var_dump($_GET);
