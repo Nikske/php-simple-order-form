@@ -80,9 +80,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             array_push($errorArr, $zipcodeErr);
         }
     }
-    // If the error array is empty, meaning if there are no errors give them the green light, otherwise clear the error array so the user can try again.
+    // If the error array is empty, meaning if there are no errors, give them the green light, otherwise clear the error array so the user can try again.
     if (empty($errorArr)) {
         $success = "Order ordered";
+        // If the order is a success, calculate the delivery time depending on whether express delivery was checked.
         if (!isset($_POST["express"])) {
             $delivery = date('h:i:s A', strtotime('+ 2 hours'));
         } else {
@@ -118,17 +119,25 @@ $drink = [
     ['name' => 'Sprite', 'price' => 2],
     ['name' => 'Ice-tea', 'price' => 3],
 ];
-// Set food to 1 to avoid initial errors
+// Set food to 1 as a default when loading the page to avoid initial errors.
 if (!isset($_GET["food"])) {
     $_GET["food"] = 1;
 }
-// If food = 1 display the products array as food otherwise (aka 0) display as drinks
+// If food = 1 display the products array as food otherwise (aka 0) display as drinks.
 if ($_GET["food"] == 1) {
     $products;
 } else {
     $products = $drink;
 }
 
+// Price calculation
+$price = 0;
+// Go through products, if one of them is checked ie if one of them is 'posted' add their price value to the total.
+for ($i = 0; $i < count($products); $i++) {
+    if (isset($_POST["products"][$i])) {
+        $price += $products[$i]["price"];
+    }
+}
 
 $totalValue = 0;
 
