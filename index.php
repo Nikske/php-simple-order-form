@@ -139,8 +139,7 @@ for ($i = 0; $i < count($products); $i++) {
     }
 }
 
-$totalValue = 0;
-
+$totalValue = 0 ;
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
     var_dump($_GET);
